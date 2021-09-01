@@ -1,0 +1,6 @@
+# Config.toml
+
+url = "https://api-m.sandbox.paypal.com"
+token = "<YOUR TOKEN>"
+client_id = "<CLIENT ID>"
+client_secret = "<CLIENT SECRET>"

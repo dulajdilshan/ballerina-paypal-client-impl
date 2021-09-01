@@ -1,0 +1,7 @@
+[package]
+name = "paypal_bal"
+org = "dulaj"
+version = "0.1.1"
+
+# [build-options]
+# observabilityIncluded = true
