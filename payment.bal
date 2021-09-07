@@ -62,12 +62,7 @@ function createSamplePayment(http:Client payPalClient) returns error? {
 }
 
 function createPayment(http:Client payPalClient, Payment payment) returns string|error {
-    http:Request req = new ();
-    req.setHeader("content-type", "application/json");
-
-    req.setJsonPayload(payment.toJson());
-    http:Response resp = check payPalClient->post("/v1/payments/payment", req);
-    json jsonPayload = check resp.getJsonPayload();
-    string paymentID = check jsonPayload.id;
+    json resp = check payPalClient->post("/v1/payments/payment", payment);
+    string paymentID = check resp.id;
     return paymentID;
 }

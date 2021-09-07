@@ -41,27 +41,18 @@ function createSampleOrder(http:Client payPalClient) returns error? {
 }
 
 function createOrder(http:Client payPalClient, Order 'order) returns json|error {
-    http:Request req = new ();
-    req.setHeader("content-type", "application/json");
-    req.setHeader("Accept", "application/json");
-
-    req.setJsonPayload('order.toJson());
-
-    http:Response resp = check payPalClient->post("/v2/checkout/orders", req);
-    json jsonPayload = check resp.getJsonPayload().cloneReadOnly();
-    return jsonPayload;
+    json resp = check payPalClient->post("/v2/checkout/orders", 'order);
+    io:println(resp);
+    return resp;
 }
 
 function getOrders(http:Client payPalClient) returns error? {
-    http:Response resp = check payPalClient->get("/v2/checkout/orders");
-    json jsonPayload = check resp.getJsonPayload().cloneReadOnly();
-    io:println(jsonPayload.toString());
-    string orderId = check jsonPayload.id;
+    json resp = check payPalClient->get("/v2/checkout/orders");    
+    io:println("Order: ", resp);
 }
 
 function getOrder(http:Client payPalClient, string orderID) returns error? {
     string url = "/v2/checkout/orders/" + orderID;
-    http:Response resp = check payPalClient->get(url);
-    json jsonPayload = check resp.getJsonPayload().cloneReadOnly();
-    io:println(jsonPayload.toString());
+    json resp = check payPalClient->get(url);
+    io:println("Order: ", resp);
 }

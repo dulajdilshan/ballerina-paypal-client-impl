@@ -15,23 +15,17 @@ public function generateToken(string url, string client_id, string client_secret
         }
     );
 
-    http:Request req = new();
-    req.setHeader("content-type", "application/x-www-form-urlencoded");
-    req.setHeader("Accept", "application/json");
-    req.setPayload("grant_type=client_credentials");
+    AuthResp authResponse = check clientEp->post(
+        "/v1/oauth2/token",
+        "grant_type=client_credentials",
+        mediaType = "application/x-www-form-urlencoded"
+    );
 
-    http:Response resp = check clientEp->post("/v1/oauth2/token", req);
-    json jsonPayload = check resp.getJsonPayload().cloneReadOnly();
-
-    AuthResp authResp = <AuthResp> jsonPayload;
-
-    string accessToken = authResp.access_token;
-
-    io:println("New Token: ", accessToken);
-    return accessToken;
+    io:println("New Token: ", authResponse.access_token);
+    return authResponse.access_token;
 }
 
-public function isConfigToml(string key = "abc", string value = "abc-value") returns error?{
+public function isConfigToml(string key = "abc", string value = "abc-value") returns error? {
     string currentDir = file:getCurrentDir();
     boolean fileExists = check file:test("Config.toml", file:WRITABLE);
 
